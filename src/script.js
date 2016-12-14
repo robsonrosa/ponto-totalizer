@@ -1,3 +1,6 @@
+var WORKING_HOURS_LIMIT = 6;
+var WORKING_MILLI_LIMIT = 1000 * 60 * 60 * WORKING_HOURS_LIMIT;
+
 function totalize() {
 	var t1i = gf('FirstIn');
 	var t1o = gf('FirstOut');
@@ -8,9 +11,32 @@ function totalize() {
 	var t4i = gf('ForthIn');
 	var t4o = gf('ForthOut');
 
-	var total = new Date((t1o - t1i) + (t2o - t2i) + (t3o - t3i) + (t4o - t4i));
+	var t1 = t1o - t1i;
+	var t2 = t2o - t2i;
+	var t3 = t3o - t3i;
+	var t4 = t4o - t4i;
+	var total = new Date(t1 + t2 + t3 + t4);
 	$('#hack-total').remove();
-	$('.sixteen.columns.alpha:last').prepend('<div id="hack-total"><label>Total</label><span>' + total.getUTCHours() + ':' + total.getUTCMinutes() + '</span></div>');
+	$('.sixteen.columns.alpha:last').prepend('<div id="hack-total"><label>Total</label><span>' + format(total) + '</span></div>');
+	chk(t1, t2, t3, t4);
+}
+
+function chk(t1, t2, t3, t4) {
+	$('#ctl00_cphPrincipal_ValidationSummary').show().html('');
+	chkt(t1, '1');
+	chkt(t4, '4');
+	chkt(t2, '2');
+	chkt(t3, '3');
+}
+
+function chkt(t, n) {
+	if (t > WORKING_MILLI_LIMIT) {
+		$('#ctl00_cphPrincipal_ValidationSummary').append('<div>O turno ' + n + ' excede as ' + WORKING_HOURS_LIMIT + ' horas (' + format(new Date(t)) + ')!</div>');
+	}
+}
+
+function format(d) {
+	return '' + d.getUTCHours() + ':' + d.getUTCMinutes();
 }
 
 function gf(i) {
