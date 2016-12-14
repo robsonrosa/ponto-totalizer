@@ -3,6 +3,7 @@ var WORKING_HOURS_LIMIT = 6;
 var WORKING_MILLI_LIMIT = HOURS_TO_MILLI * WORKING_HOURS_LIMIT;
 var LUNCH_HOURS_LIMIT = 1;
 var LUNCH_MILLI_LIMIT = HOURS_TO_MILLI * LUNCH_HOURS_LIMIT;
+var TIME_PAD_FORMAT = '00';
 
 function totalize() {
     var t1i = gf('FirstIn');
@@ -51,7 +52,12 @@ function error(message) {
 }
 
 function format(d) {
-    return '' + d.getUTCHours() + ':' + d.getUTCMinutes();
+    return lpad(d.getUTCHours()) + ':' + lpad(d.getUTCMinutes());
+}
+
+function lpad(v) {
+    let s = v.toString();
+    return TIME_PAD_FORMAT.substring(0, TIME_PAD_FORMAT.length - s.length) + s;
 }
 
 function gf(i) {
