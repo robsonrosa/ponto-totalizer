@@ -3,6 +3,8 @@ var WORKING_HOURS_LIMIT = 6;
 var WORKING_MILLI_LIMIT = HOURS_TO_MILLI * WORKING_HOURS_LIMIT;
 var LUNCH_HOURS_LIMIT = 1;
 var LUNCH_MILLI_LIMIT = HOURS_TO_MILLI * LUNCH_HOURS_LIMIT;
+var TOTAL_HOURS_LIMIT = 10;
+var TOTAL_MILLI_LIMIT = HOURS_TO_MILLI * TOTAL_HOURS_LIMIT;
 var TIME_PAD_FORMAT = '00';
 
 function totalize() {
@@ -24,6 +26,7 @@ function totalize() {
     $('.sixteen.columns.alpha:last').prepend('<div id="hack-total"><label>Total</label><span>' + format(total) + '</span></div>');
     chk(t1, t2, t3, t4);
     lnch(t1o, t2i);
+    chktotal(total);
 }
 
 function chk(t1, t2, t3, t4) {
@@ -44,6 +47,12 @@ function lnch(o, i) {
     let diff = i - o;
     if (diff < LUNCH_MILLI_LIMIT) {
         error('O intervalo de almoço deve ser maior ou igual a ' + LUNCH_HOURS_LIMIT + ' hora (' + format(new Date(diff)) + ')');
+    }
+}
+
+function chktotal(t) {
+    if (t > TOTAL_MILLI_LIMIT) {
+        error('A jornada de trabalho diária deve ser menor ou igual a ' + TOTAL_HOURS_LIMIT + ' horas (' + format(new Date(t)) + ')');
     }
 }
 
