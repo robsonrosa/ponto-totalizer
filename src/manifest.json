@@ -20,6 +20,9 @@
 			],
 			"js": [
 				"jquery-2.1.0.min.js",
+				"helper.js",
+				"validation.js",
+				"totalizer.js",
 				"script.js"
 			]
 		}
